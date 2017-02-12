@@ -1,0 +1,22 @@
+{
+  "name": "highlight",
+  "version": "1.0.0",
+  "description": "Add highlight markup to HTML content",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "highlight"
+  ],
+  "author": "Nathan Sargeant <nathan.s.sargeant@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "dom-serializer": "^0.1.0",
+    "domutils": "^1.5.1",
+    "htmlparser2": "^3.9.2"
+  }
+}
