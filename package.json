@@ -1,5 +1,5 @@
 {
-  "name": "highlight",
+  "name": "hi-lite",
   "version": "1.0.0",
   "description": "Add highlight markup to HTML content",
   "main": "index.js",
@@ -10,7 +10,8 @@
     "test": "mocha"
   },
   "keywords": [
-    "highlight"
+    "highlight",
+    "markup"
   ],
   "author": "Nathan Sargeant <nathan.s.sargeant@gmail.com>",
   "license": "MIT",
