@@ -23,6 +23,13 @@ describe('highlight', () => {
     assert.deepEqual(result, '<p>this is a <mark>test</mark></p>');
   })
 
+  it('should highlight single letters', () => {
+    const query = 'o';
+    const html = `<p>Lorem ipsum dolor sit amet.</p>`;
+    const result = highlight(query, html);
+    assert.deepEqual(result, '<p>L<mark>o</mark>rem ipsum d<mark>o</mark>l<mark>o</mark>r sit amet.</p>');
+  })
+
   it('should highlight first and last', () => {
     const query = 'highlight';
     const html = `<p>highlight text highlight</p>`
