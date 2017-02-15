@@ -8,8 +8,15 @@ describe('highlight', () => {
     assert(highlight);
     assert.deepEqual(typeof highlight, 'function');
   })
-
-  it('should highlight simple', () => {
+  
+  it('should highlight text', () => {
+    const query = 'text';
+    const html = `text`;
+    const result = highlight(query, html);
+    assert.deepEqual(result, '<mark>text</mark>');
+  })
+  
+  it('should highlight markup', () => {
     const query = 'test';
     const html = `<p>this is a test</p>`;
     const result = highlight(query, html);
@@ -28,6 +35,13 @@ describe('highlight', () => {
     const html = `<p>text highlight text</p>`
     const result = highlight(query, html);
     assert.deepEqual(result, `<p>text <mark>highlight</mark> text</p>`);
+  })
+
+  it('should highlight many, single node', () => {
+    const query = 'highlight';
+    const html = `<p>highlight text highlight text text highlight highlight text</p>`
+    const result = highlight(query, html);
+    assert.deepEqual(result, `<p><mark>highlight</mark> text <mark>highlight</mark> text text <mark>highlight</mark> <mark>highlight</mark> text</p>`);
   })
 
   it('should highlight "a lot of tests"', () => {
@@ -70,6 +84,13 @@ describe('highlight', () => {
     const html = `<ul class="reference-index__index-columns"><li><a href="#">Abbott, Hiram</a></li><li><a href="#">Abbott, Lewis</a></li></ul>`
     const result = highlight(query, html);
     assert.deepEqual(result, `<ul class="reference-index__index-columns"><li><a href="#"><mark>Abbott</mark>, Hiram</a></li><li><a href="#"><mark>Abbott</mark>, Lewis</a></li></ul>`);
+  })
+
+  it('should not push mark to the end of the parent.children', () => {
+    const query = 'highlight';
+    const html = `<p> text highlight <b>text</b> text</p>`;
+    const result = highlight(query, html);
+    assert.deepEqual(result, `<p> text <mark>highlight</mark> <b>text</b> text</p>`);
   })
 
   it.skip('should handle &nbsp;', () => {
