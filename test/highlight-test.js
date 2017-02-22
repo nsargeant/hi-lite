@@ -100,11 +100,11 @@ describe('highlight', () => {
     assert.deepEqual(result, `<p> text <mark>highlight</mark> <b>text</b> text</p>`);
   })
 
-  it.skip('should handle &nbsp;', () => {
-    const query = 'broke it';
-    const html = `<p>I broke <span>&nbsp;</span>it for</p>`;
+  it('should handle &nbsp;', () => {
+    const query = 'broke  it';
+    const html = `<p>I broke <span class="line-break">&nbsp;</span>it for</p>`;
     const result = highlight(query, html);
-    assert.deepEqual(result, `<p>I <mark>broke</mark> <span>&nbsp;</span><mark>it</mark> for</p>`);
+    assert.deepEqual(result, `<p>I <mark>broke </mark><span class="line-break"><mark>&nbsp;</mark></span><mark>it</mark> for</p>`);
   })
 
 });
