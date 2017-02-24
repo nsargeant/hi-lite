@@ -18,6 +18,7 @@
   "dependencies": {
     "dom-serializer": "^0.1.0",
     "domutils": "^1.5.1",
+    "entities": "^1.1.1",
     "htmlparser2": "^3.9.2"
   }
 }
