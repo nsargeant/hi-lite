@@ -86,6 +86,13 @@ describe('highlight', () => {
     assert.deepEqual(result, `<div><script>var thing = 'testing'</script></div>`);
   })
 
+  it('should ignore comments', () => {
+    const query = 'text';
+    const html = `<!-- text -->`;
+    const result = highlight(query, html);
+    assert.deepEqual(result, '<!-- text -->');
+  })
+
   it('should handle deeply nested', () => {
     const query = 'abbott';
     const html = `<ul class="reference-index__index-columns"><li><a href="#">Abbott, Hiram</a></li><li><a href="#">Abbott, Lewis</a></li></ul>`
@@ -99,12 +106,48 @@ describe('highlight', () => {
     const result = highlight(query, html);
     assert.deepEqual(result, `<p> text <mark>highlight</mark> <b>text</b> text</p>`);
   })
-
-  it('should handle &nbsp;', () => {
-    const query = 'broke  it';
-    const html = `<p>I broke <span class="line-break">&nbsp;</span>it for</p>`;
+  
+  it('should handle single highlight with pre non-breaking space entity', () => {
+    const query = 'highlight';
+    const html = `<p>&nbsp;highlight</p>`;
     const result = highlight(query, html);
-    assert.deepEqual(result, `<p>I <mark>broke </mark><span class="line-break"><mark>&nbsp;</mark></span><mark>it</mark> for</p>`);
+    assert.deepEqual(result, `<p>&nbsp;<mark>highlight</mark></p>`);
+  })
+
+  it('should handle single highlight with post non-breaking space entity', () => {
+    const query = 'highlight';
+    const html = `<p>highlight&nbsp;</p>`;
+    const result = highlight(query, html);
+    assert.deepEqual(result, `<p><mark>highlight</mark>&nbsp;</p>`);
+  })
+
+  it('should handle multiple highlights with inner non-breaking space entity', () => {
+    const query = 'highlight';
+    const html = `<p>highlight&nbsp;highlight</p>`;
+    const result = highlight(query, html);
+    assert.deepEqual(result, `<p><mark>highlight</mark>&nbsp;<mark>highlight</mark></p>`);
+  })
+
+  
+  it('should handle single highlight with nested non-breaking space entity', () => {
+    const query = 'broke it';
+    const html = `<p>I broke<span>&nbsp;</span>itforever</p>`;
+    const result = highlight(query, html);
+    assert.deepEqual(result, `<p>I <mark>broke</mark><span><mark>&nbsp;</mark></span><mark>it</mark>forever</p>`);
+  })
+
+  it('should handle single highlight with pre, nested, post non-breaking space entity', () => {
+    const query = 'broke it';
+    const html = `<p>I&#xa0;broke<span>&nbsp;</span>it&#xa0;forever</p>`;
+    const result = highlight(query, html);
+    assert.deepEqual(result, `<p>I&#xa0;<mark>broke</mark><span><mark>&nbsp;</mark></span><mark>it</mark>&#xa0;forever</p>`);
+  })
+
+  it('should handle single highlight with multiple nested non-breaking space entities', () => {
+    const query = 'highlight all the things man';
+    const html = `<p>I highlight<span>&nbsp;all the&#xa0;<b>things</b></span> man</p>`;
+    const result = highlight(query, html);
+    assert.deepEqual(result, `<p>I <mark>highlight</mark><span><mark>&nbsp;all the&#xa0;</mark><b><mark>things</mark></b></span><mark> man</mark></p>`);
   })
 
 });
